@@ -1,0 +1,22 @@
+import {MongoClient} from "mongodb";
+import fs from "fs";
+
+const url="mongodb://localhost:27017";
+
+const insert = JSON.parse(fs.readFileSync("data.json"));
+
+const client =new MongoClient(url);
+
+const db=client.db("usermanaged");
+
+await client.connect();
+
+console.log("Connected successfully");
+
+const collection=db.collection("transactions");
+
+const result=await collection.insertMany(insert);
+
+console.log(`Inserted ${result.insertedCount} collection`);
+
+client.close();
